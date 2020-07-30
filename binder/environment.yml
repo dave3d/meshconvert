@@ -6,4 +6,5 @@ dependencies:
   - trimesh=3.7.14
   - pip:
     - pillow==7.2.0
+    - networkx==2.4
     - vtk==9.0.1
