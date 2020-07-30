@@ -1,0 +1,6 @@
+name: stl2gltf
+channels:
+  - defaults
+dependencies:
+  - vtk=9.0.1
+
