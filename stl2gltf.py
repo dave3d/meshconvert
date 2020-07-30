@@ -18,21 +18,11 @@ ren = vtk.vtkRenderer()
 renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(ren)
 
-# Create a renderwindowinteractor
-iren = vtk.vtkRenderWindowInteractor()
-iren.SetRenderWindow(renWin)
-
 # Assign actor to the renderer
 ren.AddActor(actor)
 
-# Enable user interface interactor
-iren.Initialize()
-renWin.Render()
-iren.Start()
-
-
 writer = vtk.vtkGLTFExporter()
-writer.SetFileName("teapot.gltf")
+writer.SetFileName("teapot.glb")
 writer.InlineDataOn()
 writer.SetRenderWindow(renWin)
 writer.Write()
