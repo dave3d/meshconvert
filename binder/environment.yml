@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - trimesh=3.7.14
+  - pip=20.1.1
   - pip:
     - pillow==7.2.0
     - networkx==2.4
