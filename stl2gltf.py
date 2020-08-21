@@ -31,14 +31,14 @@ def stl2gltf(inname, outname):
 if __name__ == "__main__":
 
     inname = "teapot.stl"
-    outname = "teapot.glb"
+    outname = "teapot.gltf"
 
     if len(sys.argv) > 1:
         inname = sys.argv[1]
         if len(sys.argv) > 2:
             outname = sys.argv[2]
         else:
-            outname = inname.replace('.stl', '.glb')
+            outname = inname.replace('.stl', '.gltf')
 
     print("Converting", inname, "to", outname)
     stl2gltf(inname, outname)
