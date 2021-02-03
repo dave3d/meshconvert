@@ -11,6 +11,9 @@ import ply2gltf
 # the ply2gltf module, which uses VTK.  VTK supports GLTF writing,
 # which MeshLab does not.
 #
+# Note that the function will actually work on any file format that
+# MeshLab can read:  PLY, STL, OFF, OBJ, 3DS, VRML 2.0, X3D and COLLADA.
+#
 def wrl2gltf(inname, outname):
 
     # Use meshlab to read the WRL
