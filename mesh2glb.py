@@ -5,6 +5,7 @@ import os
 import pymeshlab as ml
 import trimesh
 
+
 def mesh2glb(inname, outname):
     """Convert a mesh file to a GLB file.
 
@@ -17,7 +18,7 @@ def mesh2glb(inname, outname):
     using the Trimesh module, since MeshLab does not support GLB.
 
     Note that in the first step, and scene hierarchy and non-mesh
-    data is stripped out.
+    data such as camera, lights or animation is stripped out.
 
     """
 
@@ -25,18 +26,24 @@ def mesh2glb(inname, outname):
     ms = ml.MeshSet()
     ms.load_new_mesh(inname)
 
+    # remove the suffix of the input name
+    dotpos = inname.rfind('.')
+    if dotpos != -1:
+        rootname = inname[0:dotpos]
+    else:
+        rootname = inname
+
+    tmpname = rootname + '.ply'
+
     # Save a temporary PLY file
-    ms.save_current_mesh('tempmesh.ply')
+    ms.save_current_mesh(tmpname)
 
-    tmesh = trimesh.load('tempmesh.ply')
+    tmesh = trimesh.load(tmpname)
 
-
-    fout = open(outname, "wb")
-    tmesh.export(fout, 'glb')
-    fout.close()
+    tmesh.export(outname)
 
     # Clean up the temp PLY file
-    os.remove('tempmesh.ply')
+    os.remove(tmpname)
 
 
 if __name__ == "__main__":
