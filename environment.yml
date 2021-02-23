@@ -2,6 +2,6 @@ name: meshconvert
 channels:
   - defaults
 dependencies:
-  - vtk=9.0.1
-  - pymeshlab=0.1.8
+  - trimesh
+  - pymeshlab
 
