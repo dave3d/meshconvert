@@ -17,8 +17,9 @@ def mesh2glb(inname, outname):
     Then for the second step the PLY mesh is converted to GLB
     using the Trimesh module, since MeshLab does not support GLB.
 
-    Note that in the first step, and scene hierarchy and non-mesh
-    data such as camera, lights or animation is stripped out.
+    Note that in the first step, any scene hierarchy and non-mesh
+    data such as camera, lights or animation is discarded.  All mesh
+    objects are merged into one.
 
     """
 
