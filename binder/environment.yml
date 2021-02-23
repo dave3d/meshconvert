@@ -1,4 +1,4 @@
-name: trimesh
+name: meshconvert
 channels:
   - conda-forge
   - defaults
@@ -8,4 +8,4 @@ dependencies:
   - pip:
     - pillow==7.2.0
     - networkx==2.4
-    - vtk==9.0.1
+    - pymeshlab
