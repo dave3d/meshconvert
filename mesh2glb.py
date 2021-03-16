@@ -9,47 +9,59 @@ import trimesh
 def mesh2glb(inname, outname):
     """Convert a mesh file to a GLB file.
 
-    This function converts an input mesh to GLB in a 2 step process.
-    First it goes from mesh to PLY using MeshLab.  For input,
-    MeshLab supports the following formats:
-        PLY, STL, OFF, OBJ, 3DS, VRML 2.0, X3D and COLLADA.
+    If the input file is in a format Trimesh supports, we load it with
+    Trimesh and write out a GLB file.  Formats supported by Trimesh
+    include STL, PLY, OBJ, OFF, GLB and GLTF.
 
+    For formats not supported by Trimesh, particularly X3D and VRML 2.0,
+    we use MeshLab to create an intermediate PLY file.  This PLY file
+    is then passed to Trimesh to produce the final GLB.
 
-    Then for the second step the PLY mesh is converted to GLB
-    using the Trimesh module, since MeshLab does not support GLB.
-
-    Note that in the first step, any scene hierarchy and non-mesh
-    data such as camera, lights or animation is discarded.  All mesh
-    objects are merged into one.
-
-    If the input mesh is a GLTF, then the first step skipped, and only
-    Trimesh is used to convert from GLTF to GLB.
+    Note that in creating this PLY file, any scene hierarchy and non-mesh
+    data such as camera, lights or animation are discarded.  All mesh
+    objects in the scene graph are merged into one bundle of triangles.
 
     """
 
-    if inname.endswith('.gltf') or inname.endswith('.GLTF'):
-        # skip the meshlab stuff if the input is GLTF
+    words = inname.split('.')
+    suffix = words[-1]
+
+    tmpname = ""
+
+    if suffix in trimesh.exchange.load.available_formats():
+        # skip the meshlab stuff if trimesh supports in input format
         tmpname = inname
     else:
         # Use meshlab to read the mesh
         ms = ml.MeshSet()
-        ms.load_new_mesh(inname)
+        try:
+            ms.load_new_mesh(inname)
 
-        # remove the suffix of the input name
-        dotpos = inname.rfind('.')
-        if dotpos != -1:
-            rootname = inname[0:dotpos]
-        else:
-            rootname = inname
+            # remove the suffix of the input name
+            dotpos = inname.rfind('.')
+            if dotpos != -1:
+                rootname = inname[0:dotpos]
+            else:
+                rootname = inname
 
-        tmpname = rootname + '.ply'
+            tmpname = rootname + '.ply'
 
-        # Save a temporary PLY file
-        ms.save_current_mesh(tmpname)
+            # Save a temporary PLY file
+            ms.save_current_mesh(tmpname)
+        except BasicException:
+            print("Error: failed to load ", inname)
+            sys.exit(1)
 
-    tmesh = trimesh.load(tmpname)
+    try:
+        tmesh = trimesh.load(tmpname)
+    except:
+        print("Error: failed to load ", tmpname)
+        sys.exit(2)
 
-    tmesh.export(outname)
+    try:
+        tmesh.export(outname)
+    except:
+        print("Error: failed to write ", outname)
 
     # Clean up the temp PLY file
     if tmpname != inname:
