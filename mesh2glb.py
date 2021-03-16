@@ -14,6 +14,7 @@ def mesh2glb(inname, outname):
     MeshLab supports the following formats:
         PLY, STL, OFF, OBJ, 3DS, VRML 2.0, X3D and COLLADA.
 
+
     Then for the second step the PLY mesh is converted to GLB
     using the Trimesh module, since MeshLab does not support GLB.
 
@@ -21,30 +22,38 @@ def mesh2glb(inname, outname):
     data such as camera, lights or animation is discarded.  All mesh
     objects are merged into one.
 
+    If the input mesh is a GLTF, then the first step skipped, and only
+    Trimesh is used to convert from GLTF to GLB.
+
     """
 
-    # Use meshlab to read the WRL
-    ms = ml.MeshSet()
-    ms.load_new_mesh(inname)
-
-    # remove the suffix of the input name
-    dotpos = inname.rfind('.')
-    if dotpos != -1:
-        rootname = inname[0:dotpos]
+    if inname.endswith('.gltf') or inname.endswith('.GLTF'):
+        # skip the meshlab stuff if the input is GLTF
+        tmpname = inname
     else:
-        rootname = inname
+        # Use meshlab to read the mesh
+        ms = ml.MeshSet()
+        ms.load_new_mesh(inname)
 
-    tmpname = rootname + '.ply'
+        # remove the suffix of the input name
+        dotpos = inname.rfind('.')
+        if dotpos != -1:
+            rootname = inname[0:dotpos]
+        else:
+            rootname = inname
 
-    # Save a temporary PLY file
-    ms.save_current_mesh(tmpname)
+        tmpname = rootname + '.ply'
+
+        # Save a temporary PLY file
+        ms.save_current_mesh(tmpname)
 
     tmesh = trimesh.load(tmpname)
 
     tmesh.export(outname)
 
     # Clean up the temp PLY file
-    os.remove(tmpname)
+    if tmpname != inname:
+        os.remove(tmpname)
 
 
 if __name__ == "__main__":
