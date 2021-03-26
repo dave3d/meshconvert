@@ -48,19 +48,19 @@ def mesh2glb(inname, outname):
 
             # Save a temporary PLY file
             ms.save_current_mesh(tmpname)
-        except BasicException:
+        except BaseException:
             print("Error: failed to load ", inname)
             sys.exit(1)
 
     try:
         tmesh = trimesh.load(tmpname)
-    except:
+    except BaseException:
         print("Error: failed to load ", tmpname)
         sys.exit(2)
 
     try:
         tmesh.export(outname)
-    except:
+    except BaseException:
         print("Error: failed to write ", outname)
 
     # Clean up the temp PLY file

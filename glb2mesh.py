@@ -24,7 +24,7 @@ def glb2mesh(inname, outname):
 
     try:
         tmesh = trimesh.load(inname)
-    except BasicException:
+    except BaseException:
         print("Error: failed to load ", inname)
         sys.exit(1)
 
@@ -42,7 +42,7 @@ def glb2mesh(inname, outname):
             for name,mesh in tmesh.geometry.items():
                 mesh.export(outname)
                 break
-        except BasicException:
+        except BaseException:
             print("Error: failed to export", inname, "to", outname)
             sys.exit(2)
         print("Trimesh export:", outname)
@@ -68,14 +68,14 @@ def glb2mesh(inname, outname):
             ms = ml.MeshSet()
             ms.load_new_mesh(tmpname)
             print("Meshlab load: ", tmpname)
-        except BasicException:
+        except BaseException:
             print("Error: Intermediate conversion failed.")
             sys.exit(3)
 
         try:
             ms.save_current_mesh(outname)
             print("Meshlab save: ", outname)
-        except BasicException:
+        except BaseException:
             print("Error: failed to save", outname)
             sys.exit(4)
 
