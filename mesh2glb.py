@@ -4,9 +4,10 @@ import sys
 import os
 import pymeshlab as ml
 import trimesh
+import glbutils
 
 
-def mesh2glb(inname, outname):
+def mesh2glb(inname, outname, removeColor=False, meshColor=None):
     """Convert a mesh file to a GLB file.
 
     If the input file is in a format Trimesh supports, we load it with
@@ -58,8 +59,28 @@ def mesh2glb(inname, outname):
         print("Error: failed to load ", tmpname)
         sys.exit(2)
 
+
+    if type(tmesh) == trimesh.Scene:
+        print("Scene")
+        if len(tmesh.geometry.items())>1:
+            print("Warning: Scene has more than 1 mesh.  Only first is converted")
+
+        mesh = None
+        for key, val in tmesh.geometry.items():
+            mesh = val
+            break
+    elif type(tmesh) == trimesh.Trimesh:
+        print("Trimesh")
+        mesh = tmesh
+
+    if removeColor:
+        glbutils.removeVertexColor(mesh)
+
+    if meshColor != None:
+        glbutils.setFaceColor(mesh, meshColor)
+
     try:
-        tmesh.export(outname)
+        mesh.export(outname)
     except BaseException:
         print("Error: failed to write ", outname)
 
