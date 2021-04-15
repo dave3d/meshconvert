@@ -60,18 +60,7 @@ def mesh2glb(inname, outname, removeColor=False, meshColor=None):
         sys.exit(2)
 
 
-    if type(tmesh) == trimesh.Scene:
-        print("Scene")
-        if len(tmesh.geometry.items())>1:
-            print("Warning: Scene has more than 1 mesh.  Only first is converted")
-
-        mesh = None
-        for key, val in tmesh.geometry.items():
-            mesh = val
-            break
-    elif type(tmesh) == trimesh.Trimesh:
-        print("Trimesh")
-        mesh = tmesh
+    mesh = glbutils.getSceneMesh(tmesh)
 
     if removeColor:
         glbutils.removeVertexColor(mesh)
