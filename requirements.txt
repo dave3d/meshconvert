@@ -1,2 +1,3 @@
 trimesh
 pymeshlab
+pyglet
