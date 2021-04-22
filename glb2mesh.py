@@ -4,8 +4,10 @@ import sys
 import os
 import pymeshlab as ml
 import trimesh
+import glbutils
 
-def glb2mesh(inname, outname):
+
+def glb2mesh(inname, outname, removeColor=False, meshColor=None):
     """Convert a GLB file to other mesh formats.
 
     If the output format is supported by Trimesh, the GLB us loaded with
@@ -33,15 +35,27 @@ def glb2mesh(inname, outname):
     words = outname.split('.')
     suffix = words[-1]
 
+    # tmesh could be a Scene, a Trimesh, or other types
+    #
+    mesh = glbutils.getSceneMesh(tmesh)
+
+    if mesh==None:
+        print("Warning: no mesh found")
+        return
+
+    if removeColor:
+        print("Removing vertex color")
+        glbutils.removeVertexColor(mesh)
+
+    if meshColor != None:
+        print("Setting face color:", meshColor)
+        glbutils.setFaceColor(mesh, meshColor)
+
     if suffix in trimesh.exchange.load.mesh_formats():
         # Use trimesh to write the output mesh
         #
         try:
-            if len(tmesh.geometry.items()) > 1:
-                print("Warning: Scene has more than one mesh. Only first will be converted.")
-            for name,mesh in tmesh.geometry.items():
-                mesh.export(outname)
-                break
+            mesh.export(outname)
         except BaseException:
             print("Error: failed to export", inname, "to", outname)
             sys.exit(2)
@@ -57,14 +71,8 @@ def glb2mesh(inname, outname):
             rootname = inname
         tmpname = rootname+".ply"
 
+        mesh.export(tmpname)
         try:
-            if len(tmesh.geometry.items()) > 1:
-                print("Warning: Scene has more than one mesh. Only first will be converted.")
-            for name,mesh in tmesh.geometry.items():
-                mesh.export(tmpname)
-                print("Trimesh export: ", tmpname)
-                break
-
             ms = ml.MeshSet()
             ms.load_new_mesh(tmpname)
             print("Meshlab load: ", tmpname)
