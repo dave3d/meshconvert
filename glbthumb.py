@@ -1,5 +1,6 @@
 
 import sys
+import argparse
 import numpy as np
 import trimesh
 import pyrender
@@ -15,7 +16,7 @@ def bound_corners(bounds):
                 corners.append(c)
     return corners
 
-def generate_thumbnail(inname, outname):
+def generate_thumbnail(inname, outname, light_color=[1.0,1.0,1.0]):
     """Generate a thumbnail image of a GLB mesh.
     """
 
@@ -38,7 +39,7 @@ def generate_thumbnail(inname, outname):
     pyren_cam = pyrender.PerspectiveCamera( yfov=np.pi / 3.0, aspectRatio=1.0)
     pyren_scene.add(pyren_cam, pose=cam_transform)
 
-    pyren_light = pyrender.DirectionalLight(color=np.ones(3), intensity=3.0)
+    pyren_light = pyrender.DirectionalLight(color=np.asarray(light_color), intensity=3.0)
     pyren_scene.add(pyren_light)
 
     r = pyrender.OffscreenRenderer(400,400)
@@ -49,17 +50,41 @@ def generate_thumbnail(inname, outname):
 
     print(outname, "written")
 
+def parseargs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filenames', nargs='*')
+    parser.add_argument('--color', '-c', action='store', dest='color',
+                        help='Lighting color "1.0 1.0 1.0"')
+
+    args = parser.parse_args()
+    return args
+
 
 if __name__ == '__main__':
 
-    inname = sys.argv[1]
+    args = parseargs()
 
-    if len(sys.argv)>2:
-        outname = sys.argv[2]
+    print(args)
+
+    inname = sys.argv[1]
+    if len(args.filenames) == 0:
+        print("Error: no input file")
+        sys.exit(1)
+
+    inname = args.filenames[0]
+
+    if len(args.filenames)>1:
+        outname = args.filenames[1]
     else:
         rootname = inname[:inname.rfind(".")]
         outname = rootname + '.png'
 
-    generate_thumbnail(inname, outname)
+    c = [1.0, 1.0, 1.0]
+    if args.color:
+        x = args.color.split(' ')
+        c = [float(a) for a in x]
+
+    print(c)
+    generate_thumbnail(inname, outname, c)
 
 
