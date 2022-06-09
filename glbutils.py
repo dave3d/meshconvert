@@ -29,7 +29,7 @@ def getSceneMesh(scene):
             print("Warning: Scene has multiple meshes. Only 1st is returned.")
 
         for key, val in scene.geometry.items():
-            print(key, val)
+            #print(key, val)
             mesh = val
             return mesh
     except BaseException:
