@@ -10,7 +10,8 @@ formats Trimesh or PyMeshLab support.
 X3D and WRL are the two formats that PyMeshLab are used for, since Trimesh does not
 support them.  Going between PyMeshLab and Trimesh, PLY is used as an intermediary format.
 Because PLY is a relatively simple format, many features could be lost in translation.  In
-particular and scene graph hierarchy, lighting or viewing parameters, or animation. 
+particular any scene graph hierarchy, lighting or viewing parameters, or animation will not
+be retained.
 
 The GLB thumbnail creation example (work-in-progress):
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dave3d/meshconvert/blob/master/thumbnail-example.ipynb)
