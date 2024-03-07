@@ -15,8 +15,8 @@ mesh = glbutils.getSceneMesh(scene)
 vsize = mesh.vertices.size
 fsize = mesh.faces.size
 
-print("Vertices: ", int(vsize/3))
-print("Triangles: ", int(fsize/3))
+print("Vertices: ", int(vsize / 3))
+print("Triangles: ", int(fsize / 3))
 
 if mesh.visual.defined:
     print("Color: ", mesh.visual.kind)

@@ -23,23 +23,22 @@ def glb2mesh(inname, outname, removeColor=False, meshColor=None):
     objects in the scene graph are merged into one bundle of triangles.
     """
 
-
     try:
         tmesh = trimesh.load(inname)
     except BaseException:
         print("Error: failed to load ", inname)
         sys.exit(1)
 
-    print ("Trimesh load:", inname)
+    print("Trimesh load:", inname)
 
-    words = outname.split('.')
+    words = outname.split(".")
     suffix = words[-1]
 
     # tmesh could be a Scene, a Trimesh, or other types
     #
     mesh = glbutils.getSceneMesh(tmesh)
 
-    if mesh==None:
+    if mesh == None:
         print("Warning: no mesh found")
         return
 
@@ -64,12 +63,12 @@ def glb2mesh(inname, outname, removeColor=False, meshColor=None):
 
     else:
         # write out a PLY and then use MeshLab
-        dotpos = inname.rfind('.')
+        dotpos = inname.rfind(".")
         if dotpos != -1:
             rootname = inname[0:dotpos]
         else:
             rootname = inname
-        tmpname = rootname+".ply"
+        tmpname = rootname + ".ply"
 
         mesh.export(tmpname)
         try:
@@ -101,8 +100,7 @@ if __name__ == "__main__":
         if len(sys.argv) > 2:
             outname = sys.argv[2]
         else:
-            outname = inname.replace('.glb', '.x3d')
+            outname = inname.replace(".glb", ".x3d")
 
     print("Converting", inname, "to", outname)
     glb2mesh(inname, outname)
-

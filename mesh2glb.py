@@ -24,7 +24,7 @@ def mesh2glb(inname, outname, removeColor=False, meshColor=None):
 
     """
 
-    words = inname.split('.')
+    words = inname.split(".")
     suffix = words[-1]
 
     tmpname = ""
@@ -39,13 +39,13 @@ def mesh2glb(inname, outname, removeColor=False, meshColor=None):
             ms.load_new_mesh(inname)
 
             # remove the suffix of the input name
-            dotpos = inname.rfind('.')
+            dotpos = inname.rfind(".")
             if dotpos != -1:
                 rootname = inname[0:dotpos]
             else:
                 rootname = inname
 
-            tmpname = rootname + '.ply'
+            tmpname = rootname + ".ply"
 
             # Save a temporary PLY file
             ms.save_current_mesh(tmpname)
@@ -58,7 +58,6 @@ def mesh2glb(inname, outname, removeColor=False, meshColor=None):
     except BaseException:
         print("Error: failed to load ", tmpname)
         sys.exit(2)
-
 
     mesh = glbutils.getSceneMesh(tmesh)
 
@@ -88,7 +87,7 @@ if __name__ == "__main__":
         if len(sys.argv) > 2:
             outname = sys.argv[2]
         else:
-            outname = inname.replace('.wrl', '.glb')
+            outname = inname.replace(".wrl", ".glb")
 
     print("Converting", inname, "to", outname)
     mesh2glb(inname, outname)
