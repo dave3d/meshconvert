@@ -25,10 +25,11 @@ def small_mesh_handler(mesh):
     them up to 100.0.  Yeah, it's an ugly hack.
     """
 
-    size = 0.0
-    for x in mesh.bounding_box.primitive.extents:
-        if x > size:
-            size = x
+    size = max(mesh.bounding_box.primitive.extents)
+
+    if size == 0.0:
+        print("Warning: zero sized mesh")
+        return
 
     if size < 1.0:
         scale = 100.0 / size
