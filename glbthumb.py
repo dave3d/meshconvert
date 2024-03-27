@@ -29,9 +29,7 @@ def small_mesh_handler(mesh):
 
     if size == 0.0:
         print("Warning: zero sized mesh")
-        return
-
-    if size < 1.0:
+    elif size < 1.0:
         scale = 100.0 / size
         print(f"Scaling small mesh by {scale:.2f}")
         scale_matrix = trimesh.transformations.scale_matrix(scale)
