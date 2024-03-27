@@ -31,7 +31,7 @@ def getSceneMesh(scene):
             # print(key, val)
             mesh = val
             return mesh
-    except BaseException:
+    except ValueException:
         print("Error: no mesh found")
 
     return None

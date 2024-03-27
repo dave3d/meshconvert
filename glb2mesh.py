@@ -25,7 +25,7 @@ def glb2mesh(inname, outname, removeColor=False, meshColor=None):
 
     try:
         tmesh = trimesh.load(inname)
-    except BaseException:
+    except ValueException:
         print("Error: failed to load ", inname)
         sys.exit(1)
 
@@ -55,7 +55,7 @@ def glb2mesh(inname, outname, removeColor=False, meshColor=None):
         #
         try:
             mesh.export(outname)
-        except BaseException:
+        except ValueException:
             print("Error: failed to export", inname, "to", outname)
             sys.exit(2)
         print("Trimesh export:", outname)
@@ -75,14 +75,14 @@ def glb2mesh(inname, outname, removeColor=False, meshColor=None):
             ms = ml.MeshSet()
             ms.load_new_mesh(tmpname)
             print("Meshlab load: ", tmpname)
-        except BaseException:
+        except ValueException:
             print("Error: Intermediate conversion failed.")
             sys.exit(3)
 
         try:
             ms.save_current_mesh(outname)
             print("Meshlab save: ", outname)
-        except BaseException:
+        except ValueException:
             print("Error: failed to save", outname)
             sys.exit(4)
 
