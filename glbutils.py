@@ -1,3 +1,6 @@
+
+""" Utilities for working with glb files. """
+
 import trimesh
 
 
@@ -20,18 +23,17 @@ def setFaceColor(mesh, color):
 def getSceneMesh(scene):
     """Get the 1st mesh in a scene."""
 
-    if type(scene) == trimesh.Trimesh:
+    if isinstance(scene, trimesh.Trimesh):
         return scene
 
     try:
         if len(scene.geometry.items()) > 1:
             print("Warning: Scene has multiple meshes. Only 1st is returned.")
 
-        for key, val in scene.geometry.items():
-            # print(key, val)
-            mesh = val
-            return mesh
-    except ValueException:
+        first_item = next(iter(scene.geometry.items()))
+        mesh = first_item[1]
+        return mesh
+    except ValueError:
         print("Error: no mesh found")
 
     return None

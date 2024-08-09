@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+""" Query a GLB file for information """
+
 import sys
 import trimesh
 import glbutils

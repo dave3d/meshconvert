@@ -1,15 +1,18 @@
 #! /usr/bin/env python
 
+""" Generate a thumbnail image of a GLB mesh. """
+
 import sys
 import argparse
 import numpy as np
 import trimesh
 import pyrender
-import glbutils
 import matplotlib.pyplot as plt
+import glbutils
 
 
 def bound_corners(bounds):
+    """ Return the 8 corners of a bounding box. """
     corners = []
     for z in range(2):
         for y in range(2):
@@ -36,7 +39,7 @@ def small_mesh_handler(mesh):
         mesh.apply_transform(scale_matrix)
 
 
-def generate_thumbnail(inname, outname, light_color=[1.0, 1.0, 1.0]):
+def generate_thumbnail(inname, outname, light_color=None):
     """Generate a thumbnail image of a GLB mesh."""
 
     print("Loading", inname)
@@ -53,8 +56,8 @@ def generate_thumbnail(inname, outname, light_color=[1.0, 1.0, 1.0]):
     corners = bound_corners(mesh.bounds)
 
     tm_scene = trimesh.scene.scene.Scene(geometry=[mesh])
-    cam = tm_scene.camera
-    cam_transform = cam.look_at(corners)
+    # cam = tm_scene.camera
+    cam_transform = tm_scene.camera.look_at(corners)
 
     pyren_mesh = pyrender.Mesh.from_trimesh(mesh)
 
@@ -64,13 +67,15 @@ def generate_thumbnail(inname, outname, light_color=[1.0, 1.0, 1.0]):
     pyren_cam = pyrender.PerspectiveCamera(yfov=np.pi / 3.0, aspectRatio=1.0)
     pyren_scene.add(pyren_cam, pose=cam_transform)
 
+    if light_color is None:
+        light_color = [1.0, 1.0, 1.0]
     pyren_light = pyrender.DirectionalLight(
         color=np.asarray(light_color), intensity=3.0
     )
     pyren_scene.add(pyren_light)
 
     r = pyrender.OffscreenRenderer(400, 400)
-    color, depth = r.render(pyren_scene)
+    color,  = r.render(pyren_scene)
 
     plt.imsave(outname, color)
 
@@ -78,6 +83,7 @@ def generate_thumbnail(inname, outname, light_color=[1.0, 1.0, 1.0]):
 
 
 def parseargs():
+    """ Parse command line arguments. """
     parser = argparse.ArgumentParser()
     parser.add_argument("filenames", nargs="*")
     parser.add_argument(
@@ -88,8 +94,7 @@ def parseargs():
         help='Lighting color "1.0 1.0 1.0"',
     )
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
@@ -97,23 +102,23 @@ if __name__ == "__main__":
 
     print(args)
 
-    inname = sys.argv[1]
+    input_name = sys.argv[1]
     if len(args.filenames) == 0:
         print("Error: no input file")
         sys.exit(1)
 
-    inname = args.filenames[0]
+    input_name = args.filenames[0]
 
     if len(args.filenames) > 1:
-        outname = args.filenames[1]
+        output_name = args.filenames[1]
     else:
-        rootname = inname[: inname.rfind(".")]
-        outname = rootname + ".png"
+        rootname = input_name[: input_name.rfind(".")]
+        output_name = rootname + ".png"
 
-    c = [1.0, 1.0, 1.0]
+    col = [1.0, 1.0, 1.0]
     if args.color:
-        x = args.color.split(" ")
-        c = [float(a) for a in x]
+        v = args.color.split(" ")
+        col = [float(a) for a in v]
 
-    print(c)
-    generate_thumbnail(inname, outname, c)
+    print(col)
+    generate_thumbnail(input_name, output_name, col)
