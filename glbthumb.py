@@ -75,9 +75,9 @@ def generate_thumbnail(inname, outname, light_color=None):
     pyren_scene.add(pyren_light)
 
     r = pyrender.OffscreenRenderer(400, 400)
-    color,  = r.render(pyren_scene)
+    rendered_images = r.render(pyren_scene)
 
-    plt.imsave(outname, color)
+    plt.imsave(outname, rendered_images[0])
 
     print(outname, "written")
 
