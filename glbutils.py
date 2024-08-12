@@ -26,6 +26,10 @@ def getSceneMesh(scene):
     if isinstance(scene, trimesh.Trimesh):
         return scene
 
+    if len(scene.geometry.items()) == 0:
+        print("Error: no mesh found")
+        return None
+
     try:
         if len(scene.geometry.items()) > 1:
             print("Warning: Scene has multiple meshes. Only 1st is returned.")
