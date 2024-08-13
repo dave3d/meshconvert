@@ -4,4 +4,4 @@ channels:
 dependencies:
   - trimesh
   - pymeshlab
-
+  - pyglet
