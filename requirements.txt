@@ -1,3 +1,5 @@
 trimesh
 pymeshlab
 pyglet
+pyrender
+matplotlib

@@ -5,3 +5,5 @@ dependencies:
   - trimesh
   - pymeshlab
   - pyglet
+  - pyrender
+  - matplotlib
