@@ -1,5 +1,7 @@
 # mesh-convert
 
+![Python application](https://github.com/dave3d/meshconvert/workflows/Python%20application/badge.svg)
+
 Try mesh to GLB conversion in Google Colab[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dave3d/meshconvert/blob/master/mesh2glb.ipynb)
 
 Mesh conversion pipelines for use in NIH 3D workflows.  NIH 3D uses GLB as its main format.  
