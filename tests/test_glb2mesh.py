@@ -5,6 +5,7 @@
 # Created on: 2021-08-29 15:00:00
 #
 
+""" Test for the glb2mesh function. """
 import os
 import tempfile
 import unittest
@@ -12,8 +13,10 @@ import trimesh
 from glb2mesh import glb2mesh
 
 class TestGlb2Mesh(unittest.TestCase):
+    """ Class to test the glb2mesh function. """
 
     def setUp(self):
+        """ Create the temporary directory and test GLB file. """
         # Create a temporary directory
         self.test_dir = tempfile.TemporaryDirectory()
         self.in_file = os.path.join(self.test_dir.name, "test.glb")
@@ -24,10 +27,12 @@ class TestGlb2Mesh(unittest.TestCase):
         mesh.export(self.in_file)
 
     def tearDown(self):
+        """ Remove all the temporary files. """
         # Cleanup the temporary directory
         self.test_dir.cleanup()
 
     def test_glb2mesh(self):
+        """ Test the glb2mesh function. """
         # Call the glb2mesh function
         glb2mesh(self.in_file, self.out_file)
 
