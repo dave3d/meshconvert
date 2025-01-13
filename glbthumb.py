@@ -12,7 +12,7 @@ import glbutils
 
 
 def bound_corners(bounds):
-    """ Return the 8 corners of a bounding box. """
+    """Return the 8 corners of a bounding box."""
     corners = []
     for z in range(2):
         for y in range(2):
@@ -83,7 +83,7 @@ def generate_thumbnail(inname, outname, light_color=None):
 
 
 def parseargs():
-    """ Parse command line arguments. """
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("filenames", nargs="*")
     parser.add_argument(

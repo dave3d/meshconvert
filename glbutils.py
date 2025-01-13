@@ -1,4 +1,3 @@
-
 """ Utilities for working with glb files. """
 
 import trimesh
