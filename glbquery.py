@@ -1,4 +1,10 @@
 #! /usr/bin/env python
+# /// script
+# requires-python = ">=3.8"
+# dependencies = [
+#   "trimesh",
+# ]
+# ///
 
 """ Query a GLB file for information """
 

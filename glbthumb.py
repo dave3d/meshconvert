@@ -1,4 +1,13 @@
 #! /usr/bin/env python
+# /// script
+# requires-python = ">=3.8"
+# dependencies = [
+#   "matplotlib",
+#   "numpy",
+#   "pyrender",
+#   "trimesh",
+# ]
+# ///
 
 """ Generate a thumbnail image of a GLB mesh. """
 
