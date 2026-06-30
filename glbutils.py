@@ -1,3 +1,9 @@
+# /// script
+# requires-python = ">=3.8"
+# dependencies = [
+#   "trimesh",
+# ]
+# ///
 """ Utilities for working with glb files. """
 
 import trimesh

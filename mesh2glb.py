@@ -1,4 +1,11 @@
 #! /usr/bin/env python
+# /// script
+# requires-python = ">=3.8"
+# dependencies = [
+#   "pymeshlab",
+#   "trimesh",
+# ]
+# ///
 
 """ Convert a mesh file to a GLB file. """
 import sys
